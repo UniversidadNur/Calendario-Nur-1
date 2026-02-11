@@ -1,4 +1,4 @@
-# Calendario 2026 (Universidad Nur)
+# Calendario 2026 - Universidad Nur
 
 Página web estática (sin dependencias) que muestra el calendario completo de 2026 y resalta fechas importantes.
 
