@@ -1,0 +1,10 @@
+{
+  "name": "calendario-nur",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Calendario 2026 (Universidad Nur)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
