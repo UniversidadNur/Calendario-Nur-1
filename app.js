@@ -405,7 +405,7 @@
 
       const name = document.createElement("h3");
       name.className = "event-name";
-      name.textContent = event.title;
+      name.textContent = eventCardTitle(event);
 
       const date = document.createElement("p");
       date.className = "event-date";
@@ -414,7 +414,7 @@
 
       const desc = document.createElement("p");
       desc.className = "event-desc";
-      desc.textContent = event.description;
+      desc.textContent = eventCardDescription(event);
 
       card.appendChild(name);
       card.appendChild(date);
@@ -469,18 +469,21 @@
     return { startDate, start, end, isFixedDate: false };
   }
 
-  function holidayNationalLabel(event) {
-    const label = (event?.description ?? event?.title ?? "").trim();
-    return `Feriado Nacional(${label})`;
-  }
-
   function eventDateLine(dateKey, event) {
-    if (isNonInstitutionalHolidayEvent(event)) return holidayNationalLabel(event);
-
     const range = eventRange(event);
     return range.isFixedDate
       ? `${formatDateES(dateKey)}`
       : `${formatDateES(dateKey)} · Inicio: ${range.start} · Fin: ${range.end}`;
+  }
+
+  function eventCardTitle(event) {
+    if (isNonInstitutionalHolidayEvent(event)) return "Feriado nacional";
+    return event?.title ?? "";
+  }
+
+  function eventCardDescription(event) {
+    if (isNonInstitutionalHolidayEvent(event)) return (event?.description ?? event?.title ?? "").trim();
+    return event?.description ?? "";
   }
 
   function dayOfWeekMondayFirst(year, monthIndex0, day) {
@@ -650,7 +653,7 @@
 
       const name = document.createElement("h3");
       name.className = "event-name";
-      name.textContent = event.title;
+      name.textContent = eventCardTitle(event);
 
       const date = document.createElement("p");
       date.className = "event-date";
@@ -659,7 +662,7 @@
 
       const desc = document.createElement("p");
       desc.className = "event-desc";
-      desc.textContent = event.description;
+      desc.textContent = eventCardDescription(event);
 
       card.appendChild(name);
       card.appendChild(date);
