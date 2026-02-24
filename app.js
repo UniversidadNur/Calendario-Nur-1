@@ -26,6 +26,35 @@
     { date: "2026-05-29", title: "Ascensión de Bahá’u’lláh", description: "Ascensión de Bahá’u’lláh" },
     { date: "2026-07-10", title: "Martirio del Báb", description: "Martirio del Báb" },
 
+    // Calendario académico (Enero–Marzo)
+    { date: "2026-01-01", title: "Año nuevo", description: "Año nuevo", range: "fixedDate" },
+    { date: "2026-01-17", title: "Tutoría 1", description: "Tutoría 1", range: "fixedDate" },
+    { date: "2026-01-19", title: "Inicio presencial", description: "Inicio presencial", range: "fixedDate" },
+    { date: "2026-01-22", title: "Feriado Nacional", description: "Feriado Nacional", range: "fixedDate" },
+    { date: "2026-01-24", title: "Tutoría 2", description: "Tutoría 2", range: "fixedDate" },
+    { date: "2026-01-31", title: "Tutoría 3 Ex Parcial", description: "Tutoría 3 Ex Parcial", range: "fixedDate" },
+
+    { date: "2026-02-03", title: "Parcial Presc", description: "Parcial Presc", range: "fixedDate" },
+    { date: "2026-02-07", title: "Tutoría 4", description: "Tutoría 4", range: "fixedDate" },
+    { date: "2026-02-14", title: "Tutoría 5", description: "Tutoría 5", range: "fixedDate" },
+    { date: "2026-02-16", title: "Feriado Carnaval", description: "Feriado Carnaval", range: "fixedDate" },
+    { date: "2026-02-17", title: "Feriado Carnaval", description: "Feriado Carnaval", range: "fixedDate" },
+    { date: "2026-02-21", title: "Examen Final Semip", description: "Examen Final Semip", range: "fixedDate" },
+    { date: "2026-02-24", title: "Examen Final Presc", description: "Examen Final Presc", range: "fixedDate" },
+
+    { date: "2026-03-07", title: "Inicio Semip. Semana A", description: "Inicio Semip. Semana A", range: "fixedDate" },
+    { date: "2026-03-08", title: "Inicio Semip. Semana A", description: "Inicio Semip. Semana A", range: "fixedDate" },
+    { date: "2026-03-09", title: "Inicio Presencial", description: "Inicio Presencial", range: "fixedDate" },
+    { date: "2026-03-11", title: "Inicio Semip. Semana A", description: "Inicio Semip. Semana A", range: "fixedDate" },
+    { date: "2026-03-14", title: "Inicio Semip. Semana B", description: "Inicio Semip. Semana B", range: "fixedDate" },
+    { date: "2026-03-15", title: "Inicio Semip. Semana B", description: "Inicio Semip. Semana B", range: "fixedDate" },
+    { date: "2026-03-18", title: "Inicio Semip. Semana B", description: "Inicio Semip. Semana B", range: "fixedDate" },
+    { date: "2026-03-21", title: "Feriado Institucional", description: "Feriado Institucional", range: "fixedDate" },
+    { date: "2026-03-22", title: "Tutoría 2 – Semana A", description: "Tutoría 2 – Semana A", range: "fixedDate" },
+    { date: "2026-03-25", title: "Tutoría 2 – Semana A", description: "Tutoría 2 – Semana A", range: "fixedDate" },
+    { date: "2026-03-28", title: "Tutoría 2 – Semana B", description: "Tutoría 2 – Semana B", range: "fixedDate" },
+    { date: "2026-03-29", title: "Tutoría 2 – Semana B", description: "Tutoría 2 – Semana B", range: "fixedDate" },
+
     // Calendario académico (Abril–Julio)
     { date: "2026-04-01", title: "Tutoría 2 – Semana B", description: "Tutoría 2 – Semana B", range: "fixedDate" },
     { date: "2026-04-03", title: "Feriado Nacional", description: "Feriado Nacional", range: "fixedDate" },
@@ -174,8 +203,26 @@
     }
   }
 
+  function isHolidayEvent(event) {
+    const title = event?.title ?? "";
+    return title.startsWith("Feriado") || title === "Año nuevo" || title.includes("Carnaval");
+  }
+
+  function uniqueEventsByKey(list) {
+    const out = [];
+    const seen = new Set();
+    for (const event of list) {
+      const rangeType = event.range ?? "sunsetToSunset";
+      const key = `${event.date}|${event.title}|${rangeType}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(event);
+    }
+    return out;
+  }
+
   const eventsByDate = new Map();
-  for (const event of events) {
+  for (const event of uniqueEventsByKey(events)) {
     const rangeType = event.range ?? "sunsetToSunset";
 
     if (rangeType === "fixedDate") {
@@ -350,8 +397,10 @@
 
       const dayEvents = eventsByDate.get(dateKey);
       if (dayEvents && dayEvents.length > 0) {
-        const primary = dayEvents[0];
+        const hasHoliday = dayEvents.some(isHolidayEvent);
+        const primary = (hasHoliday ? dayEvents.find(isHolidayEvent) : null) ?? dayEvents[0];
         dayEl.classList.add("is-event");
+        if (hasHoliday) dayEl.classList.add("is-holiday");
 
         dayEl.classList.add("is-clickable");
         dayEl.dataset.date = dateKey;
@@ -361,6 +410,7 @@
 
         const dot = document.createElement("div");
         dot.className = "event-dot";
+        if (hasHoliday) dot.classList.add("is-holiday");
         dot.title = primary.title;
         dayEl.appendChild(dot);
 
