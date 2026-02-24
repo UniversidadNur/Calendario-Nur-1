@@ -243,6 +243,31 @@
     }
   }
 
+  function isNurReligiousEvent(event) {
+    const title = event?.title ?? "";
+    return (
+      title.includes("Ridván") ||
+      title.includes("Báb") ||
+      title.includes("Bahá’u’lláh") ||
+      title.includes("Baha'u'llah")
+    );
+  }
+
+  function normalizeNurReligiousRange(event) {
+    if (!isNurReligiousEvent(event)) return event;
+
+    // Regla: feriados/eventos religiosos de Nur empiezan el día anterior a las 18:00.
+    // Esto corresponde a range = sunsetToSunset (o simplemente NO usar fixedDate).
+    const rangeType = event.range ?? "sunsetToSunset";
+    if (rangeType === "fixedDate") {
+      const { range, ...rest } = event;
+      return { ...rest, range: "sunsetToSunset" };
+    }
+
+    if (!event.range) return { ...event, range: "sunsetToSunset" };
+    return event;
+  }
+
   function isHolidayEvent(event) {
     const title = event?.title ?? "";
     if (event?.kind === "holiday") return true;
@@ -263,7 +288,8 @@
   }
 
   const eventsByDate = new Map();
-  for (const event of uniqueEventsByKey(events)) {
+  const normalizedEvents = events.map(normalizeNurReligiousRange);
+  for (const event of uniqueEventsByKey(normalizedEvents)) {
     const rangeType = event.range ?? "sunsetToSunset";
 
     if (rangeType === "fixedDate") {
