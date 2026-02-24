@@ -18,14 +18,14 @@
    *    - "fixedDate": ocurre exactamente en la fecha indicada (sin corrimiento).
    */
   const events = [
-    { date: "2026-03-21", title: "Día de Ridván", description: "Día de Ridván" },
-    { date: "2026-04-21", title: "Primer día del Festival de Ridván", description: "Primer día del Festival de Ridván" },
-    { date: "2026-04-29", title: "Noveno día del Festival de Ridván", description: "Noveno día del Festival de Ridván" },
-    { date: "2026-05-02", title: "Duodécimo día del Festival de Ridván", description: "Duodécimo día del Festival de Ridván" },
-    { date: "2026-05-24", title: "Declaración del Báb", description: "Declaración del Báb" },
-    { date: "2026-05-29", title: "Ascensión de Bahá’u’lláh", description: "Ascensión de Bahá’u’lláh" },
-    { date: "2026-07-10", title: "Martirio del Báb", description: "Martirio del Báb" },
-    { date: "2026-11-11", title: "Nacimiento de Bahá’u’lláh", description: "Nacimiento de Bahá’u’lláh" },
+    { date: "2026-03-21", title: "Feriado Institucional", description: "Día de Ridván", kind: "nurReligious" },
+    { date: "2026-04-21", title: "Feriado Institucional", description: "Primer día del Festival de Ridván", kind: "nurReligious" },
+    { date: "2026-04-29", title: "Feriado Institucional", description: "Noveno día del Festival de Ridván", kind: "nurReligious" },
+    { date: "2026-05-02", title: "Feriado Institucional", description: "Duodécimo día del Festival de Ridván", kind: "nurReligious" },
+    { date: "2026-05-24", title: "Feriado Institucional", description: "Declaración del Báb", kind: "nurReligious" },
+    { date: "2026-05-29", title: "Feriado Institucional", description: "Ascensión de Bahá’u’lláh", kind: "nurReligious" },
+    { date: "2026-07-10", title: "Feriado Institucional", description: "Martirio del Báb", kind: "nurReligious" },
+    { date: "2026-11-11", title: "Feriado Institucional", description: "Nacimiento de Bahá’u’lláh", kind: "nurReligious" },
 
     // Calendario académico (Enero–Marzo)
     { date: "2026-01-01", title: "Año nuevo", description: "Año nuevo", range: "fixedDate" },
@@ -244,13 +244,7 @@
   }
 
   function isNurReligiousEvent(event) {
-    const title = event?.title ?? "";
-    return (
-      title.includes("Ridván") ||
-      title.includes("Báb") ||
-      title.includes("Bahá’u’lláh") ||
-      title.includes("Baha'u'llah")
-    );
+    return event?.kind === "nurReligious";
   }
 
   function normalizeNurReligiousRange(event) {
