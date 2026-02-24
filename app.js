@@ -167,51 +167,27 @@
 
     {
       date: "2026-03-09",
-      title: "Primer semestre presencial — Inicio",
-      description: "Inicio del primer semestre presencial.",
-      range: "fixedDate",
-    },
-    {
-      date: "2026-07-18",
-      title: "Primer semestre presencial — Finalización",
-      description: "Finalización del primer semestre presencial.",
+      title: "Inicio de semestre",
+      description: "Inicio de semestre.",
       range: "fixedDate",
     },
     {
       date: "2026-08-10",
-      title: "Segundo semestre presencial — Inicio",
-      description: "Inicio del segundo semestre presencial.",
-      range: "fixedDate",
-    },
-    {
-      date: "2026-12-26",
-      title: "Segundo semestre presencial — Finalización",
-      description: "Finalización del segundo semestre presencial.",
+      title: "Inicio de semestre",
+      description: "Inicio de semestre.",
       range: "fixedDate",
     },
 
     {
       date: "2026-03-07",
-      title: "Primer semestre semipresencial — Inicio",
-      description: "Inicio del primer semestre semipresencial.",
-      range: "fixedDate",
-    },
-    {
-      date: "2026-07-19",
-      title: "Primer semestre semipresencial — Finalización",
-      description: "Finalización del primer semestre semipresencial.",
+      title: "Inicio de semestre",
+      description: "Inicio de semestre.",
       range: "fixedDate",
     },
     {
       date: "2026-08-08",
-      title: "Segundo semestre semipresencial — Inicio",
-      description: "Inicio del segundo semestre semipresencial.",
-      range: "fixedDate",
-    },
-    {
-      date: "2026-12-16",
-      title: "Segundo semestre semipresencial — Finalización",
-      description: "Finalización del segundo semestre semipresencial.",
+      title: "Inicio de semestre",
+      description: "Inicio de semestre.",
       range: "fixedDate",
     },
   ];
