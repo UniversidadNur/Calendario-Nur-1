@@ -410,10 +410,7 @@
       const date = document.createElement("p");
       date.className = "event-date";
 
-      const range = eventRange(event);
-      date.textContent = range.isFixedDate
-        ? `${formatDateES(dateKey)}`
-        : `${formatDateES(dateKey)} · Inicio: ${range.start} · Fin: ${range.end}`;
+      date.textContent = eventDateLine(dateKey, event);
 
       const desc = document.createElement("p");
       desc.className = "event-desc";
@@ -470,6 +467,20 @@
     const end = `${event.date} 18:00`;
 
     return { startDate, start, end, isFixedDate: false };
+  }
+
+  function holidayNationalLabel(event) {
+    const label = (event?.description ?? event?.title ?? "").trim();
+    return `Feriado Nacional(${label})`;
+  }
+
+  function eventDateLine(dateKey, event) {
+    if (isNonInstitutionalHolidayEvent(event)) return holidayNationalLabel(event);
+
+    const range = eventRange(event);
+    return range.isFixedDate
+      ? `${formatDateES(dateKey)}`
+      : `${formatDateES(dateKey)} · Inicio: ${range.start} · Fin: ${range.end}`;
   }
 
   function dayOfWeekMondayFirst(year, monthIndex0, day) {
@@ -644,10 +655,7 @@
       const date = document.createElement("p");
       date.className = "event-date";
 
-      const range = eventRange(event);
-      date.textContent = range.isFixedDate
-        ? `${formatDateES(selectedDate)}`
-        : `${formatDateES(selectedDate)} · Inicio: ${range.start} · Fin: ${range.end}`;
+      date.textContent = eventDateLine(selectedDate, event);
 
       const desc = document.createElement("p");
       desc.className = "event-desc";
