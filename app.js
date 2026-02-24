@@ -515,7 +515,7 @@
 
         const label = document.createElement("div");
         label.className = "event-label";
-        label.textContent = dayEvents.length === 1 ? primary.title : `${dayEvents.length} eventos`;
+        label.textContent = dayEvents.length === 1 ? primary.title : String(dayEvents.length);
         dayEl.appendChild(label);
 
         if (dayEvents.length === 1) {
