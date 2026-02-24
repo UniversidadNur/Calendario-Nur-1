@@ -316,6 +316,30 @@
     });
   }
 
+  function pruneFixedDateDuplicates(list) {
+    if (!list || list.length <= 1) return list;
+
+    const titlesWithTimedEvents = new Set();
+    for (const event of list) {
+      const rangeType = event.range ?? "sunsetToSunset";
+      if (rangeType !== "fixedDate") titlesWithTimedEvents.add(event.title);
+    }
+
+    if (titlesWithTimedEvents.size === 0) return list;
+
+    return list.filter((event) => {
+      const rangeType = event.range ?? "sunsetToSunset";
+      if (rangeType !== "fixedDate") return true;
+      return !titlesWithTimedEvents.has(event.title);
+    });
+  }
+
+  // Evita duplicados visuales: si existe un evento con horario (18:00–18:00),
+  // se elimina la versión fixedDate (sin horas) con el mismo título.
+  for (const [dateKey, list] of eventsByDate.entries()) {
+    eventsByDate.set(dateKey, pruneFixedDateDuplicates(list));
+  }
+
   let selectedDate = null;
 
   function isMobile() {
