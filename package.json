@@ -2,8 +2,13 @@
   "name": "calendario-nur",
   "version": "1.0.0",
   "private": true,
-  "description": "Calendario 2026 (Universidad Nur)",
+  "description": "Calendario académico 2026 (Universidad NUR) — web estática para practicar JavaScript, fechas y DOM.",
   "main": "server.js",
+  "author": "Tadeo Vargas",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TadeoVargasAlvarez/Calendario-Nur"
+  },
   "scripts": {
     "start": "node server.js"
   }

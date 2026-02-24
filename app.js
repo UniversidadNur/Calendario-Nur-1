@@ -31,8 +31,9 @@
 
     // Enero
     { date: "2026-01-01", title: "Año Nuevo", description: "Año Nuevo", range: "fixedDate", kind: "holiday" },
+    { date: "2026-01-02", title: "Año Nuevo", description: "Año Nuevo", range: "fixedDate", kind: "holiday" },
     { date: "2026-01-17", title: "Tutoría 1", description: "Tutoría 1", range: "fixedDate" },
-    { date: "2026-01-19", title: "Inicio Presencial", description: "Inicio Presencial", range: "fixedDate" },
+    { date: "2026-01-19", title: "Inicio de modalidad Presencial", description: "Inicio de modalidad Presencial", range: "fixedDate" },
     {
       date: "2026-01-22",
       title: "Día del Estado Plurinacional",
@@ -53,13 +54,43 @@
     { date: "2026-02-24", title: "Examen Final Presencial", description: "Examen Final Presencial", range: "fixedDate" },
 
     // Marzo
-    { date: "2026-03-07", title: "Inicio Semipresencial Semana A", description: "Inicio Semipresencial Semana A", range: "fixedDate" },
-    { date: "2026-03-08", title: "Inicio Semipresencial Semana A", description: "Inicio Semipresencial Semana A", range: "fixedDate" },
-    { date: "2026-03-09", title: "Inicio Presencial", description: "Inicio Presencial", range: "fixedDate" },
-    { date: "2026-03-11", title: "Inicio Semipresencial Semana A", description: "Inicio Semipresencial Semana A", range: "fixedDate" },
-    { date: "2026-03-14", title: "Inicio Semipresencial Semana B", description: "Inicio Semipresencial Semana B", range: "fixedDate" },
-    { date: "2026-03-15", title: "Inicio Semipresencial Semana B", description: "Inicio Semipresencial Semana B", range: "fixedDate" },
-    { date: "2026-03-18", title: "Inicio Semipresencial Semana B", description: "Inicio Semipresencial Semana B", range: "fixedDate" },
+    {
+      date: "2026-03-07",
+      title: "Inicio de modalidad Semipresencial Semana A",
+      description: "Inicio de modalidad Semipresencial Semana A",
+      range: "fixedDate",
+    },
+    {
+      date: "2026-03-08",
+      title: "Inicio de modalidad Semipresencial Semana A",
+      description: "Inicio de modalidad Semipresencial Semana A",
+      range: "fixedDate",
+    },
+    { date: "2026-03-09", title: "Inicio de modalidad Presencial", description: "Inicio de modalidad Presencial", range: "fixedDate" },
+    {
+      date: "2026-03-11",
+      title: "Inicio de modalidad Semipresencial Semana A",
+      description: "Inicio de modalidad Semipresencial Semana A",
+      range: "fixedDate",
+    },
+    {
+      date: "2026-03-14",
+      title: "Inicio de modalidad Semipresencial Semana B",
+      description: "Inicio de modalidad Semipresencial Semana B",
+      range: "fixedDate",
+    },
+    {
+      date: "2026-03-15",
+      title: "Inicio de modalidad Semipresencial Semana B",
+      description: "Inicio de modalidad Semipresencial Semana B",
+      range: "fixedDate",
+    },
+    {
+      date: "2026-03-18",
+      title: "Inicio de modalidad Semipresencial Semana B",
+      description: "Inicio de modalidad Semipresencial Semana B",
+      range: "fixedDate",
+    },
     { date: "2026-03-22", title: "Tutoría 2 Semana A", description: "Tutoría 2 Semana A", range: "fixedDate" },
     { date: "2026-03-25", title: "Tutoría 2 Semana A", description: "Tutoría 2 Semana A", range: "fixedDate" },
     { date: "2026-03-28", title: "Tutoría 2 Semana B", description: "Tutoría 2 Semana B", range: "fixedDate" },
@@ -126,13 +157,43 @@
 
     // Agosto
     { date: "2026-08-06", title: "Independencia de Bolivia", description: "Independencia de Bolivia", range: "fixedDate", kind: "holiday" },
-    { date: "2026-08-08", title: "Inicio Semipresencial Semana A", description: "Inicio Semipresencial Semana A", range: "fixedDate" },
-    { date: "2026-08-09", title: "Inicio Semipresencial Semana A", description: "Inicio Semipresencial Semana A", range: "fixedDate" },
-    { date: "2026-08-10", title: "Inicio Presencial", description: "Inicio Presencial", range: "fixedDate" },
-    { date: "2026-08-12", title: "Inicio Semipresencial Semana A", description: "Inicio Semipresencial Semana A", range: "fixedDate" },
-    { date: "2026-08-15", title: "Inicio Semipresencial Semana B", description: "Inicio Semipresencial Semana B", range: "fixedDate" },
-    { date: "2026-08-16", title: "Inicio Semipresencial Semana B", description: "Inicio Semipresencial Semana B", range: "fixedDate" },
-    { date: "2026-08-19", title: "Inicio Semipresencial Semana B", description: "Inicio Semipresencial Semana B", range: "fixedDate" },
+    {
+      date: "2026-08-08",
+      title: "Inicio de modalidad Semipresencial Semana A",
+      description: "Inicio de modalidad Semipresencial Semana A",
+      range: "fixedDate",
+    },
+    {
+      date: "2026-08-09",
+      title: "Inicio de modalidad Semipresencial Semana A",
+      description: "Inicio de modalidad Semipresencial Semana A",
+      range: "fixedDate",
+    },
+    { date: "2026-08-10", title: "Inicio de modalidad Presencial", description: "Inicio de modalidad Presencial", range: "fixedDate" },
+    {
+      date: "2026-08-12",
+      title: "Inicio de modalidad Semipresencial Semana A",
+      description: "Inicio de modalidad Semipresencial Semana A",
+      range: "fixedDate",
+    },
+    {
+      date: "2026-08-15",
+      title: "Inicio de modalidad Semipresencial Semana B",
+      description: "Inicio de modalidad Semipresencial Semana B",
+      range: "fixedDate",
+    },
+    {
+      date: "2026-08-16",
+      title: "Inicio de modalidad Semipresencial Semana B",
+      description: "Inicio de modalidad Semipresencial Semana B",
+      range: "fixedDate",
+    },
+    {
+      date: "2026-08-19",
+      title: "Inicio de modalidad Semipresencial Semana B",
+      description: "Inicio de modalidad Semipresencial Semana B",
+      range: "fixedDate",
+    },
     { date: "2026-08-22", title: "Tutoría 2 Semana A", description: "Tutoría 2 Semana A", range: "fixedDate" },
     { date: "2026-08-23", title: "Tutoría 2 Semana A", description: "Tutoría 2 Semana A", range: "fixedDate" },
     { date: "2026-08-26", title: "Tutoría 2 Semana A", description: "Tutoría 2 Semana A", range: "fixedDate" },
