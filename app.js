@@ -482,10 +482,16 @@
   }
 
   function eventCardDescription(event) {
-    const desc = event?.description ?? "";
-    const title = eventCardTitle(event);
-    if (desc === title) return "";
-    if (isNonInstitutionalHolidayEvent(event)) return desc.trim();
+    const rawDesc = event?.description ?? "";
+    const desc = rawDesc.trim();
+    const title = (eventCardTitle(event) ?? "").trim();
+
+    if (!desc) return "";
+
+    // Oculta la descripción cuando coincide visualmente con el título
+    if (desc.localeCompare(title, undefined, { sensitivity: "base" }) === 0) return "";
+
+    // Para feriados nacionales y otros eventos mostramos la descripción limpia
     return desc;
   }
 
