@@ -412,13 +412,16 @@
 
       date.textContent = eventDateLine(dateKey, event);
 
-      const desc = document.createElement("p");
-      desc.className = "event-desc";
-      desc.textContent = eventCardDescription(event);
+      const descText = eventCardDescription(event);
 
       card.appendChild(name);
       card.appendChild(date);
-      card.appendChild(desc);
+      if (descText) {
+        const desc = document.createElement("p");
+        desc.className = "event-desc";
+        desc.textContent = descText;
+        card.appendChild(desc);
+      }
       modalBody.appendChild(card);
     }
 
@@ -669,13 +672,16 @@
 
       date.textContent = eventDateLine(selectedDate, event);
 
-      const desc = document.createElement("p");
-      desc.className = "event-desc";
-      desc.textContent = eventCardDescription(event);
+      const descText = eventCardDescription(event);
 
       card.appendChild(name);
       card.appendChild(date);
-      card.appendChild(desc);
+      if (descText) {
+        const desc = document.createElement("p");
+        desc.className = "event-desc";
+        desc.textContent = descText;
+        card.appendChild(desc);
+      }
       list.appendChild(card);
     }
   }
