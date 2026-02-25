@@ -472,8 +472,8 @@
   function eventDateLine(dateKey, event) {
     const range = eventRange(event);
     return range.isFixedDate
-      ? `${formatDateES(dateKey)}`
-      : `${formatDateES(dateKey)} · Inicio: ${range.start} · Fin: ${range.end}`;
+      ? ``
+      : `Inicio: ${range.start} · Fin: ${range.end}`;
   }
 
   function eventCardTitle(event) {
