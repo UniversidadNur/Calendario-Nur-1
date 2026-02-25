@@ -474,12 +474,14 @@
 
   function eventDateLine(dateKey, event) {
     const range = eventRange(event);
-    return range.isFixedDate
-      ? ``
-      : `Inicio: ${range.start} · Fin: ${range.end}`;
+    // No mostrar línea de horario para feriados institucionales
+    if (isInstitutionalHolidayEvent(event)) return "";
+
+    return range.isFixedDate ? `` : `Inicio: ${range.start} · Fin: ${range.end}`;
   }
 
   function eventCardTitle(event) {
+    if (isInstitutionalHolidayEvent(event)) return `Feriado institucional (${event?.title ?? ""})`;
     if (isNonInstitutionalHolidayEvent(event)) return "Feriado nacional";
     return event?.title ?? "";
   }
