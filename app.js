@@ -482,8 +482,11 @@
   }
 
   function eventCardDescription(event) {
-    if (isNonInstitutionalHolidayEvent(event)) return (event?.description ?? event?.title ?? "").trim();
-    return event?.description ?? "";
+    const desc = event?.description ?? "";
+    const title = eventCardTitle(event);
+    if (desc === title) return "";
+    if (isNonInstitutionalHolidayEvent(event)) return desc.trim();
+    return desc;
   }
 
   function dayOfWeekMondayFirst(year, monthIndex0, day) {
