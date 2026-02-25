@@ -481,7 +481,7 @@
   }
 
   function eventCardTitle(event) {
-    if (isInstitutionalHolidayEvent(event)) return `Feriado institucional (${event?.title ?? ""})`;
+    if (isInstitutionalHolidayEvent(event)) return "Feriado institucional";
     if (isNonInstitutionalHolidayEvent(event)) return "Feriado nacional";
     return event?.title ?? "";
   }
