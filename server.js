@@ -38,6 +38,37 @@ function safeResolve(requestPath) {
 
 const server = http.createServer((req, res) => {
   const method = req.method ?? "GET";
+  // Allow POST only for import endpoint; otherwise restrict to GET/HEAD
+  if (method === "POST") {
+    if ((req.url ?? "").startsWith("/api/import-products")) {
+      let body = "";
+      req.on("data", (chunk) => (body += chunk));
+      req.on("end", () => {
+        try {
+          const obj = JSON.parse(body || "[]");
+          const outPath = path.join(rootDir, "products.json");
+          fs.writeFile(outPath, JSON.stringify(obj, null, 2), (err) => {
+            if (err) {
+              res.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
+              res.end("Error escribiendo archivo: " + String(err));
+              return;
+            }
+            res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+            res.end("Productos guardados en products.json");
+          });
+        } catch (err) {
+          res.writeHead(400, { "Content-Type": "text/plain; charset=utf-8" });
+          res.end("JSON inválido: " + String(err));
+        }
+      });
+      return;
+    }
+
+    res.writeHead(405, { "Content-Type": "text/plain; charset=utf-8" });
+    res.end("Method Not Allowed");
+    return;
+  }
+
   if (method !== "GET" && method !== "HEAD") {
     res.writeHead(405, { "Content-Type": "text/plain; charset=utf-8" });
     res.end("Method Not Allowed");

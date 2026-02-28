@@ -10,6 +10,10 @@
     <header class="page-header">
       <div class="container">
         <h1 class="title">Calendario Académico 2026 - Universidad Nur</h1>
+        <div class="import-controls" style="margin-top:8px;">
+          <button id="importProductsBtn" class="btn">Importar productos (.txt)</button>
+          <input id="importProductsFile" type="file" accept=".txt" style="display:none" />
+        </div>
       </div>
     </header>
 
@@ -48,6 +52,17 @@
           <button id="mobileEventModalClose" class="modal-close" type="button" aria-label="Cerrar">×</button>
         </div>
         <div id="mobileEventModalBody" class="modal-body"></div>
+      </div>
+    </div>
+
+    <div id="importModal" class="modal" aria-hidden="true">
+      <div class="modal-backdrop" data-modal-close="true"></div>
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="importModalTitle">
+        <div class="modal-header">
+          <h2 id="importModalTitle" class="modal-title">Importar productos</h2>
+          <button id="importModalClose" class="modal-close" type="button" aria-label="Cerrar">×</button>
+        </div>
+        <div id="importModalBody" class="modal-body"></div>
       </div>
     </div>
 

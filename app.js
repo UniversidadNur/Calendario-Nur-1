@@ -474,7 +474,7 @@
 
   function eventDateLine(dateKey, event) {
     const range = eventRange(event);
-    // No mostrar línea de horario para feriados institucionales
+    // No mostrar línea de h    orario para feriados institucionales
     if (isInstitutionalHolidayEvent(event)) return "";
 
     return range.isFixedDate ? `` : `Inicio: ${range.start} · Fin: ${range.end}`;
@@ -711,4 +711,230 @@
       if (!isMobile()) closeMobileModal();
     });
   }
+
+  // --- Importar productos (.txt) UI & Lógica ---
+  function initImportUI() {
+    const importBtn = document.getElementById("importProductsBtn");
+    const fileInput = document.getElementById("importProductsFile");
+    const importModal = document.getElementById("importModal");
+    const importModalBody = document.getElementById("importModalBody");
+    const importModalClose = document.getElementById("importModalClose");
+
+    if (!importBtn || !fileInput) return;
+
+    importBtn.addEventListener("click", () => fileInput.click());
+
+    fileInput.addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const text = ev.target.result;
+          const products = parseProductsTxt(String(text));
+          showImportModal(products);
+        } catch (err) {
+          alert("Error leyendo el archivo: " + String(err));
+        }
+      };
+      reader.readAsText(file, "utf-8");
+    });
+
+    function close() {
+      importModal?.classList.remove("is-open");
+      importModal?.setAttribute("aria-hidden", "true");
+    }
+
+    importModalClose?.addEventListener("click", close);
+    importModal?.addEventListener("click", (ev) => {
+      if (ev.target instanceof HTMLElement && ev.target.dataset.modalClose === "true") close();
+    });
+  }
+
+  function parseProductsTxt(content) {
+    const lines = content.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+    const products = [];
+
+    const categoryKeywords = {
+      medicamento: ["medic", "tablet", "capsul", "jarabe", "ampolla", "inyecci"],
+      higiene: ["jabón", "shampoo", "higien", "higiene", "cepill"],
+      belleza: ["crema", "cosm", "maquillaje", "perfume"],
+      alimentacion: ["alimento", "comida", "snack", "golosin", "bebida"],
+      suplement: ["suplement", "vitamin"],
+      limpieza: ["deterg", "limpi", "cloro", "desinfect"],
+      otro: [""]
+    };
+
+    function mapCategoryByText(text) {
+      const t = (text || "").toLowerCase();
+      for (const [cat, keywords] of Object.entries(categoryKeywords)) {
+        for (const kw of keywords) {
+          if (!kw) continue;
+          if (t.includes(kw)) return cat;
+        }
+      }
+      return "otro";
+    }
+
+    function detectDelimiter(sample) {
+      const candidates = ["\t", ";", "|", ","]; // prefer tab, semicolon, pipe, comma
+      let best = ",";
+      let bestCount = -1;
+      for (const c of candidates) {
+        const count = sample.split(c).length;
+        if (count > bestCount) {
+          bestCount = count;
+          best = c;
+        }
+      }
+      return best;
+    }
+
+    for (const line of lines) {
+      // If line looks like key:value pairs (e.g. "Nombre: X; Categoria: Y")
+      if (line.includes(":" ) && /[A-Za-zñÑáéíóúÁÉÍÓÚ]/.test(line)) {
+        const parts = line.split(/[;|\t]/).map((p) => p.trim()).filter(Boolean);
+        const obj = { raw: line };
+        for (const p of parts) {
+          const [k, ...rest] = p.split(":");
+          if (!k) continue;
+          const key = k.trim().toLowerCase();
+          const val = rest.join(":").trim();
+          if (key.includes("cat") || key.includes("categoria")) obj.category = val;
+          else if (key.includes("marca") || key.includes("brand")) obj.brand = val;
+          else if (key.includes("precio") || key.includes("price")) {
+            obj.price = Number(String(val).replace(/[^0-9.,-]/g, "").replace(",", ".")) || null;
+          } else if (key.includes("stock") || key.includes("cantidad") || key.includes("qty")) {
+            obj.stock = Number(val.replace(/[^0-9-]/g, "")) || null;
+          } else if (key.includes("nombre") || key.includes("producto") || key.includes("name")) obj.name = val;
+        }
+        obj.category = obj.category ?? mapCategoryByText(obj.name ?? obj.raw);
+        products.push(obj);
+        continue;
+      }
+
+      // Generic delimited formats
+      const delimiter = detectDelimiter(line);
+      const tokens = line.split(delimiter).map((t) => t.trim()).filter(Boolean);
+      const obj = { raw: line };
+      // Heurísticas: price token contains digits + optional decimal, stock is integer, brand short
+      for (const token of tokens) {
+        const lower = token.toLowerCase();
+        if (!obj.name && lower.length > 2 && !/^[0-9.,\-]+$/.test(lower)) {
+          // candidate name or brand
+          if (!obj.brand && lower.length <= 20 && lower.split(" ").length <= 3 && /[a-zñáéíóú]/i.test(lower)) {
+            obj.brand = obj.brand ?? token;
+            continue;
+          }
+        }
+
+        // price
+        const priceMatch = token.replace(/\s/g, "").match(/[0-9]+[.,]?[0-9]*/);
+        if (!obj.price && priceMatch && /\d/.test(priceMatch[0])) {
+          obj.price = Number(priceMatch[0].replace(",", "."));
+          continue;
+        }
+
+        // stock
+        const stockMatch = token.match(/^\d+$/);
+        if (!obj.stock && stockMatch) {
+          obj.stock = Number(stockMatch[0]);
+          continue;
+        }
+
+        // category by keyword
+        if (!obj.category) {
+          const cat = mapCategoryByText(token);
+          if (cat !== "otro") obj.category = cat;
+        }
+
+        // name fallback
+        if (!obj.name) obj.name = token;
+      }
+
+      // Final fallbacks
+      obj.name = obj.name ?? (tokens[0] ?? "");
+      obj.category = obj.category ?? mapCategoryByText(obj.name ?? obj.raw);
+      products.push(obj);
+    }
+
+    return products;
+  }
+
+  function showImportModal(products) {
+    const importModal = document.getElementById("importModal");
+    const body = document.getElementById("importModalBody");
+    if (!importModal || !body) return;
+    body.textContent = "";
+
+    const summary = document.createElement("div");
+    summary.innerHTML = `<p>Productos detectados: <strong>${products.length}</strong></p>`;
+    body.appendChild(summary);
+
+    const list = document.createElement("div");
+    list.style.maxHeight = "240px";
+    list.style.overflow = "auto";
+    for (let i = 0; i < Math.min(200, products.length); i++) {
+      const p = products[i];
+      const item = document.createElement("div");
+      item.style.padding = "6px 0";
+      item.textContent = `${p.name ?? "(sin nombre)"} — categoria: ${p.category ?? "(sin)"} — marca: ${p.brand ?? "(sin)"} — precio: ${p.price ?? "-"} — stock: ${p.stock ?? "-"}`;
+      list.appendChild(item);
+    }
+    body.appendChild(list);
+
+    const actions = document.createElement("div");
+    actions.style.marginTop = "12px";
+
+    const saveLocalBtn = document.createElement("button");
+    saveLocalBtn.textContent = "Guardar en localStorage";
+    saveLocalBtn.addEventListener("click", () => {
+      localStorage.setItem("importedProducts", JSON.stringify(products));
+      alert("Productos guardados en localStorage bajo la clave 'importedProducts'.");
+    });
+
+    const downloadBtn = document.createElement("button");
+    downloadBtn.textContent = "Descargar JSON";
+    downloadBtn.style.marginLeft = "8px";
+    downloadBtn.addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(products, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "imported-products.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    const sendServerBtn = document.createElement("button");
+    sendServerBtn.textContent = "Enviar al servidor";
+    sendServerBtn.style.marginLeft = "8px";
+    sendServerBtn.addEventListener("click", async () => {
+      try {
+        const res = await fetch("/api/import-products", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(products),
+        });
+        if (!res.ok) throw new Error("Respuesta no OK: " + res.status);
+        const data = await res.text();
+        alert("Servidor: " + data);
+      } catch (err) {
+        alert("Error enviando al servidor: " + String(err));
+      }
+    });
+
+    actions.appendChild(saveLocalBtn);
+    actions.appendChild(downloadBtn);
+    actions.appendChild(sendServerBtn);
+    body.appendChild(actions);
+
+    importModal.classList.add("is-open");
+    importModal.setAttribute("aria-hidden", "false");
+  }
+
+  // Inicializar controls si existen
+  try { initImportUI(); } catch (e) { /* no fatal */ }
 })();
