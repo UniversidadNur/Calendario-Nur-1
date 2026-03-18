@@ -297,14 +297,12 @@
 
     // Regla: feriados/eventos religiosos de Nur empiezan el día anterior a las 18:00.
     // Esto corresponde a range = sunsetToSunset (o simplemente NO usar fixedDate).
-    const rangeType = event.range ?? "sunsetToSunset";
-    if (rangeType === "fixedDate") {
-      const { range, ...rest } = event;
-      return { ...rest, range: "sunsetToSunset" };
-    }
+    // Por defecto usamos "sunsetToSunset". Si el autor del evento especifica
+    // explícitamente `range` (por ejemplo "fixedDate"), respetamos esa elección
+    // y no la convertimos.
+    if (Object.prototype.hasOwnProperty.call(event, "range")) return event;
 
-    if (!event.range) return { ...event, range: "sunsetToSunset" };
-    return event;
+    return { ...event, range: "sunsetToSunset" };
   }
 
   function isHolidayEvent(event) {
