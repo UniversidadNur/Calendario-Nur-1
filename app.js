@@ -19,7 +19,7 @@
    */
   const events = [
     // Feriados institucionales Nur/Bahá’í (18:00 a 18:00)
-    { date: "2026-03-21", title: "Naw-Rúz", description: "Naw-Rúz", kind: "nurReligious" },
+    { date: "2026-03-21", title: "Naw-Rúz", description: "Naw-Rúz", range: "fixedDate", kind: "nurReligious" },
     { date: "2026-04-21", title: "Primer Día del Ridván", description: "Primer Día del Ridván", kind: "nurReligious" },
     { date: "2026-04-29", title: "Noveno Día del Ridván", description: "Noveno Día del Ridván", kind: "nurReligious" },
     { date: "2026-05-02", title: "Duodécimo Día del Ridván", description: "Duodécimo Día del Ridván", kind: "nurReligious" },
