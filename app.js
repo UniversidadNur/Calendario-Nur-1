@@ -354,7 +354,7 @@
 
     pushEvent(eventsByDate, event.date, {
       ...event,
-      description: event.description ? `${event.description} · Termina hoy a las 18:00.` : "Termina hoy a las 18:00.",
+      description: event.description ? `${event.description} · Todo el día.` : "Todo el día.",
       occurrence: "end",
     });
   }
