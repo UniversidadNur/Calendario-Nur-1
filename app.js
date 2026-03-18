@@ -337,7 +337,11 @@
   for (const event of uniqueEventsByKey(normalizedEvents)) {
     const rangeType = event.range ?? "sunsetToSunset";
 
-    if (rangeType === "fixedDate") {
+    // Si es un evento Nur/Bahá'í (institucional) queremos mantener la
+    // ocurrencia de inicio el día anterior (18:00) aunque el autor haya
+    // marcado `range: "fixedDate"` para el día final. Para otros eventos
+    // `fixedDate` significa que solo ocurre en la fecha indicada.
+    if (rangeType === "fixedDate" && !isNurReligiousEvent(event)) {
       pushEvent(eventsByDate, event.date, event);
       continue;
     }
