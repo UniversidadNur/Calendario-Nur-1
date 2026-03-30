@@ -19,7 +19,7 @@
    */
   const events = [
     // Feriados institucionales Nur/Bahá’í (18:00 a 18:00)
-    { date: "2026-03-21", title: "Naw-Rúz", description: "Naw-Rúz", range: "fixedDate", kind: "nurReligious" },
+    { date: "2026-03-21", title: "Naw-Rúz", description: "Naw-Rúz", kind: "nurReligious" },
     { date: "2026-04-21", title: "Primer Día del Ridván", description: "Primer Día del Ridván", kind: "nurReligious" },
     { date: "2026-04-29", title: "Noveno Día del Ridván", description: "Noveno Día del Ridván", kind: "nurReligious" },
     { date: "2026-05-02", title: "Duodécimo Día del Ridván", description: "Duodécimo Día del Ridván", kind: "nurReligious" },
@@ -95,6 +95,7 @@
     { date: "2026-03-25", title: "Tutoría 2 Semana A", description: "Tutoría 2 Semana A", range: "fixedDate" },
     { date: "2026-03-28", title: "Tutoría 2 Semana B", description: "Tutoría 2 Semana B", range: "fixedDate" },
     { date: "2026-03-29", title: "Tutoría 2 Semana B", description: "Tutoría 2 Semana B", range: "fixedDate" },
+    { date: "2026-03-22", title: "Elecciones Subnacionales", description: "Elecciones Subnacionales", range: "fixedDate", kind: "holiday" },
 
     // Abril
     { date: "2026-04-03", title: "Viernes Santo", description: "Viernes Santo", range: "fixedDate", kind: "holiday" },
@@ -114,6 +115,7 @@
 
     // Mayo
     { date: "2026-05-01", title: "Día del Trabajador", description: "Día del Trabajador", range: "fixedDate", kind: "holiday" },
+    { date: "2026-05-02", title: "Día del Trabajador (Institucional)", description: "Día del Trabajador (Institucional)", kind: "nurReligious" },
     { date: "2026-05-03", title: "Tutoría 5 Parcial", description: "Tutoría 5 Parcial", range: "fixedDate" },
     { date: "2026-05-06", title: "Tutoría 5 Parcial", description: "Tutoría 5 Parcial", range: "fixedDate" },
     { date: "2026-05-09", title: "Tutoría 5 Parcial", description: "Tutoría 5 Parcial", range: "fixedDate" },
@@ -129,6 +131,7 @@
     // Junio
     { date: "2026-06-03", title: "Tutoría 7 Semana A", description: "Tutoría 7 Semana A", range: "fixedDate" },
     { date: "2026-06-04", title: "Corpus Christi", description: "Corpus Christi", range: "fixedDate", kind: "holiday" },
+    { date: "2026-06-05", title: "Feriado Nacional", description: "Feriado Nacional", range: "fixedDate", kind: "holiday" },
     { date: "2026-06-06", title: "Tutoría 7 Semana B", description: "Tutoría 7 Semana B", range: "fixedDate" },
     { date: "2026-06-07", title: "Tutoría 6 Semana B", description: "Tutoría 6 Semana B", range: "fixedDate" },
     { date: "2026-06-10", title: "Tutoría 6 Semana B", description: "Tutoría 6 Semana B", range: "fixedDate" },
@@ -139,6 +142,7 @@
     { date: "2026-06-20", title: "Tutoría 8 Semana B", description: "Tutoría 8 Semana B", range: "fixedDate" },
     { date: "2026-06-21", title: "Año Nuevo Andino Amazónico", description: "Año Nuevo Andino Amazónico", range: "fixedDate", kind: "holiday" },
     { date: "2026-06-22", title: "Inicio Examen Final Presencial", description: "Inicio Examen Final Presencial", range: "fixedDate" },
+    { date: "2026-06-22", title: "Feriado Nacional", description: "Feriado Nacional", range: "fixedDate", kind: "holiday" },
     { date: "2026-06-24", title: "Tutoría 7 Semana B", description: "Tutoría 7 Semana B", range: "fixedDate" },
     { date: "2026-06-27", title: "Tutoría 7 Semana A", description: "Tutoría 7 Semana A", range: "fixedDate" },
     { date: "2026-06-28", title: "Tutoría 9 Final Semana A", description: "Tutoría 9 Final Semana A", range: "fixedDate" },
@@ -292,17 +296,19 @@
     return event?.kind === "nurReligious";
   }
 
-  function normalizeNurReligiousRange(event) {
-    if (!isNurReligiousEvent(event)) return event;
+  function normalizeHolidayRange(event) {
+    if (!event) return event;
 
-    // Regla: feriados/eventos religiosos de Nur empiezan el día anterior a las 18:00.
-    // Esto corresponde a range = sunsetToSunset (o simplemente NO usar fixedDate).
-    // Por defecto usamos "sunsetToSunset". Si el autor del evento especifica
-    // explícitamente `range` (por ejemplo "fixedDate"), respetamos esa elección
-    // y no la convertimos.
-    if (Object.prototype.hasOwnProperty.call(event, "range")) return event;
+    // Aplicar la regla SOLO a feriados Nur/Bahá'í (feriados bajai):
+    // - Si el evento es `nurReligious` y no especificó `range`, lo normalizamos
+    //   a `sunsetToSunset` (empieza día anterior 18:00).
+    // - Para el resto de eventos no hacemos cambios.
+    if (isNurReligiousEvent(event)) {
+      if (Object.prototype.hasOwnProperty.call(event, "range")) return event;
+      return { ...event, range: "sunsetToSunset" };
+    }
 
-    return { ...event, range: "sunsetToSunset" };
+    return event;
   }
 
   function isHolidayEvent(event) {
@@ -333,7 +339,7 @@
   }
 
   const eventsByDate = new Map();
-  const normalizedEvents = events.map(normalizeNurReligiousRange);
+  const normalizedEvents = events.map(normalizeHolidayRange);
   for (const event of uniqueEventsByKey(normalizedEvents)) {
     const rangeType = event.range ?? "sunsetToSunset";
 
