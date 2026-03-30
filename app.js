@@ -340,9 +340,56 @@
   const eventsByDate = new Map();
   const normalizedEvents = events.map(normalizeHolidayRange);
 
-  // Excepciones institucionales que se muestran como "todo el día" en el día final.
-  // El resto de institucionales finalizan a las 18:00 del día indicado.
-  const institutionalAllDayEndDates = new Set(["2026-03-21", "2026-05-02"]);
+  const institutionalStartDescriptions = new Map([
+    [
+      "2026-03-20",
+      "Feriado Institucional comienza a las 18:00 hrs. A partir de esa hora se suspenden todas las actividades académicas y administrativas de la Universidad.",
+    ],
+    [
+      "2026-04-20",
+      "Feriado Institucional comienza a las 18:00 hrs. A partir de esa hora se suspenden todas las actividades académicas y administrativas de la Universidad.",
+    ],
+    [
+      "2026-04-28",
+      "Feriado Institucional comienza a las 18:00 hrs. A partir de esa hora se suspenden todas las actividades académicas y administrativas de la Universidad.",
+    ],
+    ["2026-05-01", "Feriado Nacional y Feriado Institucional."],
+    [
+      "2026-05-28",
+      "Feriado Institucional comienza a las 18:00 hrs. A partir de esa hora se suspenden todas las actividades académicas y administrativas de la Universidad.",
+    ],
+    [
+      "2026-07-09",
+      "Feriado Institucional comienza a las 18:00 hrs. A partir de esa hora se suspenden todas las actividades académicas y administrativas de la Universidad.",
+    ],
+  ]);
+
+  const institutionalEndDescriptions = new Map([
+    [
+      "2026-03-21",
+      "Feriado Institucional suspensión de actividades académicas y administrativas todo el día.",
+    ],
+    [
+      "2026-04-21",
+      "Feriado Institucional desde las 00:00 hrs hasta las 18:00 hrs. A partir de las 18:00 hrs las clases son normales en modalidad virtual.",
+    ],
+    [
+      "2026-04-29",
+      "Feriado Institucional desde las 00:00 hrs hasta las 18:00 hrs. A partir de las 18:00 hrs las clases son normales en modalidad virtual.",
+    ],
+    [
+      "2026-05-02",
+      "Feriado Institucional suspensión de actividades académicas y administrativas todo el día.",
+    ],
+    [
+      "2026-05-29",
+      "Feriado Institucional desde las 00:00 hrs hasta las 18:00 hrs. A partir de las 18:00 hrs las clases son normales en modalidad virtual.",
+    ],
+    [
+      "2026-07-10",
+      "Feriado Institucional desde las 00:00 hrs hasta las 18:00 hrs. A partir de las 18:00 hrs las clases son normales en modalidad virtual.",
+    ],
+  ]);
 
   for (const event of uniqueEventsByKey(normalizedEvents)) {
     const rangeType = event.range ?? "sunsetToSunset";
@@ -360,21 +407,29 @@
     // Se registran en ambos días con descripciones distintas.
     const startDate = prevDate(event.date);
     const isInstitutional = isNurReligiousEvent(event);
-    const endPhrase = isInstitutional
-      ? institutionalAllDayEndDates.has(event.date)
-        ? "Todo el día."
-        : "Hasta hoy a las 18:00."
-      : "Todo el día.";
+    const startDescription =
+      isInstitutional && institutionalStartDescriptions.has(startDate)
+        ? institutionalStartDescriptions.get(startDate)
+        : event.description
+          ? `${event.description} · Empieza hoy a las 18:00.`
+          : "Empieza hoy a las 18:00.";
+
+    const endDescription =
+      isInstitutional && institutionalEndDescriptions.has(event.date)
+        ? institutionalEndDescriptions.get(event.date)
+        : event.description
+          ? `${event.description} · Todo el día.`
+          : "Todo el día.";
 
     pushEvent(eventsByDate, startDate, {
       ...event,
-      description: event.description ? `${event.description} · Empieza hoy a las 18:00.` : "Empieza hoy a las 18:00.",
+      description: startDescription,
       occurrence: "start",
     });
 
     pushEvent(eventsByDate, event.date, {
       ...event,
-      description: event.description ? `${event.description} · ${endPhrase}` : endPhrase,
+      description: endDescription,
       occurrence: "end",
     });
   }
