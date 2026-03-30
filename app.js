@@ -115,7 +115,6 @@
 
     // Mayo
     { date: "2026-05-01", title: "Día del Trabajador", description: "Día del Trabajador", range: "fixedDate", kind: "holiday" },
-    { date: "2026-05-02", title: "Día del Trabajador (Institucional)", description: "Día del Trabajador (Institucional)", kind: "nurReligious" },
     { date: "2026-05-03", title: "Tutoría 5 Parcial", description: "Tutoría 5 Parcial", range: "fixedDate" },
     { date: "2026-05-06", title: "Tutoría 5 Parcial", description: "Tutoría 5 Parcial", range: "fixedDate" },
     { date: "2026-05-09", title: "Tutoría 5 Parcial", description: "Tutoría 5 Parcial", range: "fixedDate" },
