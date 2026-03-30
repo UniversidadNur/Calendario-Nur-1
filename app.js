@@ -339,6 +339,11 @@
 
   const eventsByDate = new Map();
   const normalizedEvents = events.map(normalizeHolidayRange);
+
+  // Excepciones institucionales que se muestran como "todo el día" en el día final.
+  // El resto de institucionales finalizan a las 18:00 del día indicado.
+  const institutionalAllDayEndDates = new Set(["2026-03-21", "2026-05-02"]);
+
   for (const event of uniqueEventsByKey(normalizedEvents)) {
     const rangeType = event.range ?? "sunsetToSunset";
 
@@ -354,6 +359,12 @@
     // Eventos tipo 18:00 del día anterior -> 18:00 del día indicado.
     // Se registran en ambos días con descripciones distintas.
     const startDate = prevDate(event.date);
+    const isInstitutional = isNurReligiousEvent(event);
+    const endPhrase = isInstitutional
+      ? institutionalAllDayEndDates.has(event.date)
+        ? "Todo el día."
+        : "Hasta hoy a las 18:00."
+      : "Todo el día.";
 
     pushEvent(eventsByDate, startDate, {
       ...event,
@@ -363,7 +374,7 @@
 
     pushEvent(eventsByDate, event.date, {
       ...event,
-      description: event.description ? `${event.description} · Todo el día.` : "Todo el día.",
+      description: event.description ? `${event.description} · ${endPhrase}` : endPhrase,
       occurrence: "end",
     });
   }
