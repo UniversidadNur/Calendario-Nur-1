@@ -353,7 +353,7 @@
       "2026-04-28",
       "Feriado Institucional comienza a las 18:00 hrs. A partir de esa hora se suspenden todas las actividades académicas y administrativas de la Universidad.",
     ],
-    ["2026-05-01", "Feriado Nacional y Feriado Institucional."],
+    // El 01/05 es feriado nacional (Día del Trabajador). No marcar como institucional.
     [
       "2026-05-28",
       "Feriado Institucional comienza a las 18:00 hrs. A partir de esa hora se suspenden todas las actividades académicas y administrativas de la Universidad.",
@@ -450,6 +450,17 @@
       if (rangeType !== "fixedDate") return true;
       return !titlesWithTimedEvents.has(event.title);
     });
+  }
+
+  // Si en una fecha existen feriados nacionales y también feriados
+  // institucionales (Nur/Bahá'í), preferimos mostrar solo los
+  // feriados no institucionales en las vistas/diálogos para evitar
+  // confusión (p.ej. 01/05 debe mostrarse solo como "Día del Trabajador").
+  function filterEventsForDisplay(list) {
+    if (!list || list.length === 0) return list;
+    const hasNonInst = list.some(isNonInstitutionalHolidayEvent);
+    if (!hasNonInst) return list;
+    return list.filter((e) => !isInstitutionalHolidayEvent(e));
   }
 
   // Evita duplicados visuales: si existe un evento con horario (18:00–18:00),
@@ -638,13 +649,14 @@
       if (dayEvents && dayEvents.length > 0) {
         const hasInstitutionalHoliday = dayEvents.some(isInstitutionalHolidayEvent);
         const hasNonInstitutionalHoliday = dayEvents.some(isNonInstitutionalHolidayEvent);
+        // Preferir feriado nacional (no institucional) cuando ambos existan en la misma fecha.
         const primary =
-          (hasInstitutionalHoliday ? dayEvents.find(isInstitutionalHolidayEvent) : null) ??
           (hasNonInstitutionalHoliday ? dayEvents.find(isNonInstitutionalHolidayEvent) : null) ??
+          (hasInstitutionalHoliday ? dayEvents.find(isInstitutionalHolidayEvent) : null) ??
           dayEvents[0];
         dayEl.classList.add("is-event");
-        if (hasInstitutionalHoliday) dayEl.classList.add("is-holiday-institutional");
-        else if (hasNonInstitutionalHoliday) dayEl.classList.add("is-holiday");
+        if (hasNonInstitutionalHoliday) dayEl.classList.add("is-holiday");
+        else if (hasInstitutionalHoliday) dayEl.classList.add("is-holiday-institutional");
 
         dayEl.classList.add("is-clickable");
         dayEl.dataset.date = dateKey;
@@ -654,8 +666,8 @@
 
         const dot = document.createElement("div");
         dot.className = "event-dot";
-        if (hasInstitutionalHoliday) dot.classList.add("is-holiday-institutional");
-        else if (hasNonInstitutionalHoliday) dot.classList.add("is-holiday");
+        if (hasNonInstitutionalHoliday) dot.classList.add("is-holiday");
+        else if (hasInstitutionalHoliday) dot.classList.add("is-holiday-institutional");
         dot.title = primary.title;
         dayEl.appendChild(dot);
 
@@ -703,8 +715,8 @@
 
     renderSelectedEvent();
 
-    const selectedEvents = selectedDate ? eventsByDate.get(selectedDate) : null;
-    openMobileModal(selectedDate, selectedEvents);
+    const selectedEventsForModal = selectedDate ? filterEventsForDisplay(eventsByDate.get(selectedDate)) : null;
+    openMobileModal(selectedDate, selectedEventsForModal);
   }
 
   function renderYear() {
@@ -724,7 +736,7 @@
     const list = document.getElementById("eventsList");
     list.textContent = "";
 
-    const selectedEvents = selectedDate ? eventsByDate.get(selectedDate) : null;
+    const selectedEvents = selectedDate ? filterEventsForDisplay(eventsByDate.get(selectedDate)) : null;
     if (!selectedEvents || selectedEvents.length === 0) {
       const empty = document.createElement("div");
       empty.className = "empty-state";
