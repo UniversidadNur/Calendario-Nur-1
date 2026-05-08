@@ -161,6 +161,13 @@
     // Agosto
     { date: "2026-08-06", title: "Independencia de Bolivia", description: "Independencia de Bolivia", range: "fixedDate", kind: "holiday" },
     {
+      date: "2026-08-07",
+      title: "Feriado extendido",
+      description: "Feriado extendido por feriado nacional",
+      range: "fixedDate",
+      kind: "holiday",
+    },
+    {
       date: "2026-08-08",
       title: "Inicio de modalidad Semipresencial Semana A",
       description: "Inicio de modalidad Semipresencial Semana A",
