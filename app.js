@@ -157,7 +157,7 @@
     { date: "2026-07-16", title: "Revolución de La Paz - feriado departamental sede La Paz", description: "Revolución de La Paz - feriado departamental sede La Paz", range: "fixedDate", kind: "holiday" },
     { date: "2026-07-18", title: "Tutoría 9 Final Semana A", description: "Tutoría 9 Final Semana A", range: "fixedDate" },
     { date: "2026-07-19", title: "Tutoría 9 Final Semana B", description: "Tutoría 9 Final Semana B", range: "fixedDate" },
-    { date: "2026-07-26", title: "Feriado Departamental", description: "Feriado Departamental", range: "fixedDate", kind: "holiday" },
+    { date: "2026-07-16", title: "Feriado Departamental", description: "Feriado Departamental", range: "fixedDate", kind: "holiday" },
 
     // Agosto
     { date: "2026-08-06", title: "Independencia de Bolivia", description: "Independencia de Bolivia", range: "fixedDate", kind: "holiday" },
