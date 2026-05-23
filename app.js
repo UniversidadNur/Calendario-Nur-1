@@ -157,6 +157,7 @@
     { date: "2026-07-16", title: "Revolución de La Paz - feriado departamental sede La Paz", description: "Revolución de La Paz - feriado departamental sede La Paz", range: "fixedDate", kind: "holiday" },
     { date: "2026-07-18", title: "Tutoría 9 Final Semana A", description: "Tutoría 9 Final Semana A", range: "fixedDate" },
     { date: "2026-07-19", title: "Tutoría 9 Final Semana B", description: "Tutoría 9 Final Semana B", range: "fixedDate" },
+    { date: "2026-07-26", title: "Feriado Departamental", description: "Feriado Departamental", range: "fixedDate", kind: "holiday" },
 
     // Agosto
     { date: "2026-08-06", title: "Independencia de Bolivia", description: "Independencia de Bolivia", range: "fixedDate", kind: "holiday" },
@@ -223,7 +224,7 @@
     { date: "2026-09-19", title: "Fin 1er Parcial Presencial", description: "Fin 1er Parcial Presencial", range: "fixedDate" },
     { date: "2026-09-20", title: "Tutoría 4 Semana A", description: "Tutoría 4 Semana A", range: "fixedDate" },
     { date: "2026-09-23", title: "Tutoría 4 Semana A", description: "Tutoría 4 Semana A", range: "fixedDate" },
-    { date: "2026-09-24", title: "Independencia de Santa Cruz - feriado departamental sede Santa Cruz", description: "Independencia de Santa Cruz - feriado departamental sede Santa Cruz", range: "fixedDate", kind: "holiday" },
+    { date: "2026-09-24", title: "Feriado Departamental", description: "Independencia de Santa Cruz - feriado departamental sede Santa Cruz", range: "fixedDate", kind: "holiday" },
     { date: "2026-09-26", title: "Tutoría 4 Semana B", description: "Tutoría 4 Semana B", range: "fixedDate" },
     { date: "2026-09-27", title: "Tutoría 4 Semana B", description: "Tutoría 4 Semana B", range: "fixedDate" },
     { date: "2026-09-30", title: "Tutoría 4 Semana B", description: "Tutoría 4 Semana B", range: "fixedDate" },
