@@ -574,7 +574,11 @@
 
   function eventCardTitle(event) {
     if (isInstitutionalHolidayEvent(event)) return "Feriado institucional";
-    if (isNonInstitutionalHolidayEvent(event)) return "Feriado nacional";
+    if (isNonInstitutionalHolidayEvent(event)) {
+      const rawTitle = event?.title ?? "";
+      if (rawTitle.toLowerCase().includes("feriado departamental")) return "Feriado departamental";
+      return "Feriado nacional";
+    }
     return event?.title ?? "";
   }
 
