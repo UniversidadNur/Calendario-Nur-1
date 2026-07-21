@@ -26,8 +26,20 @@
     { date: "2026-05-24", title: "Declaración del Báb", description: "Declaración del Báb", kind: "nurReligious" },
     { date: "2026-05-29", title: "Ascensión de Bahá’u’lláh", description: "Ascensión de Bahá’u’lláh", kind: "nurReligious" },
     { date: "2026-07-10", title: "Martirio del Báb", description: "Martirio del Báb", kind: "nurReligious" },
-    { date: "2026-11-10", title: "Nacimiento del Báb", description: "Nacimiento del Báb", kind: "nurReligious" },
-    { date: "2026-11-11", title: "Nacimiento de Bahá’u’lláh", description: "Nacimiento de Bahá’u’lláh", kind: "nurReligious" },
+    {
+      date: "2026-11-10",
+      title: "Nacimiento del Báb y Nacimiento de Bahá’u’lláh",
+      description: "Nacimiento del Báb y Nacimiento de Bahá’u’lláh",
+      kind: "nurReligious",
+    },
+    {
+      date: "2026-11-11",
+      title: "Feriado Institucional",
+      description:
+        "Feriado Institucional desde las 00:00 hrs hasta las 18:00 hrs. A partir de las 18:00 hrs las clases son normales en modalidad virtual.",
+      range: "fixedDate",
+      kind: "holiday",
+    },
 
     // Enero
     { date: "2026-01-01", title: "Año Nuevo", description: "Año Nuevo", range: "fixedDate", kind: "holiday" },
